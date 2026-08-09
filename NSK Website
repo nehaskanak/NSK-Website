@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NSK — Websites, built to spec</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy: #0A1930;
+    --navy-2: #132A4A;
+    --paper: #F6F4EF;
+    --paper-2: #EFEBE2;
+    --ink: #12161C;
+    --ink-soft: #4A5361;
+    --amber: #E3A857;
+    --teal: #4A7C7C;
+    --line-dark: rgba(230,225,215,0.14);
+    --line-light: rgba(10,25,48,0.10);
+    --radius: 3px;
+    --max: 1120px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Inter', sans-serif;
+    color:var(--ink);
+    background:var(--paper);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important;}
+  }
+  h1,h2,h3{font-family:'Fraunces', serif; font-weight:600; letter-spacing:-0.01em; color:var(--navy);}
+  a{color:inherit; text-decoration:none;}
+  .mono{font-family:'IBM Plex Mono', monospace;}
+  .wrap{max-width:var(--max); margin:0 auto; padding:0 32px;}
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--teal);
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{content:''; width:20px; height:1px; background:var(--teal); display:inline-block;}
+  section{position:relative;}
+  ::selection{background:var(--amber); color:var(--navy);}
+
+  /* ---------- Header ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(246,244,239,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line-light);
+  }
+  .nav{ display:flex; align-items:center; justify-content:space-between; height:76px;}
+  .logo{
+    display:flex; align-items:center; gap:11px;
+    font-family:'Fraunces', serif; font-weight:700; font-size:25px; color:var(--navy);
+    letter-spacing:0.01em;
+  }
+  .logo .wordmark{ position:relative; }
+  .logo .wordmark::after{
+    content:''; position:absolute; left:0; bottom:-4px; width:100%; height:3px;
+    background:var(--amber); border-radius:2px;
+    transform:scaleX(0.35); transform-origin:left; transition:transform .25s ease;
+  }
+  .logo:hover .wordmark::after{ transform:scaleX(1); }
+  .logo-mark{
+    width:36px; height:36px; border-radius:3px;
+    background:var(--navy);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces', serif; font-size:17px; font-weight:700; color:var(--amber);
+    position:relative;
+  }
+  .logo-mark::before, .logo-mark::after{
+    content:''; position:absolute; width:6px; height:6px; border:1.5px solid var(--amber);
+  }
+  .logo-mark::before{ top:-4px; left:-4px; border-width:1.5px 0 0 1.5px; }
+  .logo-mark::after{ bottom:-4px; right:-4px; border-width:0 1.5px 1.5px 0; }
+  nav ul{ list-style:none; display:flex; gap:36px; }
+  nav ul a{
+    font-size:14px; font-weight:500; color:var(--ink-soft);
+    transition:color .2s ease; position:relative;
+  }
+  nav ul a:hover{ color:var(--navy); }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'IBM Plex Mono', monospace; font-size:13px; font-weight:500;
+    padding:11px 20px; border-radius:var(--radius);
+    background:var(--navy); color:var(--paper);
+    border:1px solid var(--navy);
+    transition:all .2s ease;
+    cursor:pointer;
+  }
+  .btn:hover{ background:var(--navy-2); transform:translateY(-1px); }
+  .btn:focus-visible, a:focus-visible, button:focus-visible{
+    outline:2px solid var(--amber); outline-offset:3px;
+  }
+  .btn-ghost{
+    background:transparent; color:var(--navy); border:1px solid var(--line-light);
+  }
+  .btn-ghost:hover{ border-color:var(--navy); background:transparent; }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    background:var(--navy);
+    color:var(--paper);
+    padding:100px 0 0;
+    overflow:hidden;
+    position:relative;
+  }
+  .hero::before{
+    content:'';
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(var(--line-dark) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-dark) 1px, transparent 1px);
+    background-size:44px 44px;
+    mask-image:linear-gradient(to bottom, black, transparent 85%);
+    pointer-events:none;
+  }
+  .hero-watermark{
+    position:absolute; top:50%; right:-40px; transform:translateY(-50%);
+    font-family:'Fraunces', serif; font-weight:700; font-size:min(22vw, 320px);
+    color:transparent; -webkit-text-stroke:1px rgba(246,244,239,0.06);
+    line-height:1; pointer-events:none; user-select:none; z-index:0;
+  }
+  .hero-inner{ position:relative; z-index:1; display:grid; grid-template-columns:1.1fr 0.9fr; gap:40px; align-items:center; padding-bottom:0;}
+  .hero-copy .eyebrow{ color:var(--amber); margin-bottom:22px; }
+  .hero-copy .eyebrow::before{ background:var(--amber); }
+  .hero h1{
+    font-size:clamp(38px, 5vw, 60px);
+    line-height:1.04;
+    color:var(--paper);
+    margin-bottom:22px;
+  }
+  .hero h1 em{ font-style:italic; color:var(--amber); }
+  .hero p{ font-size:17px; color:rgba(246,244,239,0.72); max-width:460px; margin-bottom:34px; }
+  .hero-cta{ display:flex; gap:14px; margin-bottom:64px; flex-wrap:wrap; }
+  .hero .btn{ background:var(--amber); color:var(--navy); border-color:var(--amber); }
+  .hero .btn:hover{ background:#eeb46e; }
+  .hero .btn-ghost{ color:var(--paper); border-color:rgba(246,244,239,0.28); }
+  .hero .btn-ghost:hover{ border-color:var(--paper); }
+
+  /* Blueprint signature illustration */
+  .blueprint{
+    position:relative; height:380px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .blueprint svg{ width:100%; height:100%; overflow:visible; }
+  .bp-line{
+    fill:none; stroke:var(--teal); stroke-width:1.4;
+    stroke-dasharray:600; stroke-dashoffset:600;
+    animation:draw 2.4s ease forwards;
+  }
+  .bp-fill{
+    fill:var(--amber); opacity:0;
+    animation:appear .6s ease forwards;
+    animation-delay:2.1s;
+  }
+  .bp-fill.alt{ fill:var(--teal); }
+  .bp-label{
+    font-family:'IBM Plex Mono', monospace; font-size:9px; fill:rgba(246,244,239,0.45);
+    opacity:0; animation:appear .6s ease forwards; animation-delay:2.4s;
+  }
+  @keyframes draw{ to{ stroke-dashoffset:0; } }
+  @keyframes appear{ to{ opacity:1; } }
+
+  .stat-strip{
+    position:relative;
+    border-top:1px solid var(--line-dark);
+    padding:26px 0;
+    display:grid; grid-template-columns:repeat(4,1fr);
+  }
+  .stat{ padding:0 24px; border-left:1px solid var(--line-dark); }
+  .stat:first-child{ border-left:none; padding-left:0; }
+  .stat .num{ font-family:'Fraunces', serif; font-size:28px; color:var(--amber); font-weight:600; }
+  .stat .lbl{ font-size:12px; color:rgba(246,244,239,0.55); margin-top:4px; }
+
+  /* ---------- Section shell ---------- */
+  .section{ padding:96px 0; }
+  .section-head{ max-width:640px; margin-bottom:56px; }
+  .section-head .eyebrow{ margin-bottom:16px; }
+  .section-head h2{ font-size:clamp(28px,3.4vw,38px); line-height:1.15; }
+  .section-head p{ color:var(--ink-soft); margin-top:14px; font-size:15.5px; }
+  .alt-bg{ background:var(--paper-2); }
+
+  /* ---------- Services ---------- */
+  .services-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line-light); border:1px solid var(--line-light); }
+  .service-card{ background:var(--paper); padding:32px 26px; transition:background .2s ease; }
+  .service-card:hover{ background:#fff; }
+  .service-card .idx{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--teal); margin-bottom:22px; }
+  .service-card h3{ font-size:19px; margin-bottom:10px; }
+  .service-card p{ font-size:14px; color:var(--ink-soft); }
+
+  /* ---------- Portfolio ---------- */
+  .portfolio-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(300px,1fr)); gap:28px; }
+  .proj-card{
+    border:1px solid var(--line-light); border-radius:var(--radius); overflow:hidden; background:#fff;
+    transition:box-shadow .25s ease, transform .25s ease;
+    display:flex; flex-direction:column;
+  }
+  .proj-card:hover{ box-shadow:0 16px 32px -18px rgba(10,25,48,0.28); transform:translateY(-3px); }
+  .browser-chrome{
+    height:150px; position:relative; overflow:hidden;
+    display:flex; flex-direction:column; cursor:pointer;
+  }
+  .browser-chrome .hover-hint{
+    position:absolute; inset:0; background:rgba(10,25,48,0.72); color:var(--paper);
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    font-family:'IBM Plex Mono', monospace; font-size:12.5px; letter-spacing:0.04em;
+    opacity:0; transition:opacity .2s ease; z-index:2;
+  }
+  .browser-chrome:hover .hover-hint{ opacity:1; }
+  .chrome-bar{ height:26px; background:var(--navy); display:flex; align-items:center; gap:6px; padding:0 10px; flex-shrink:0; }
+  .chrome-dot{ width:6px; height:6px; border-radius:50%; background:rgba(246,244,239,0.35); }
+  .chrome-body{ flex:1; position:relative; }
+  .chrome-body .blk{ position:absolute; background:rgba(255,255,255,0.85); }
+  .proj-meta{ padding:22px 22px 24px; flex:1; display:flex; flex-direction:column; }
+  .proj-meta .cat{ font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--teal); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:8px; }
+  .proj-meta h3{ font-size:18px; margin-bottom:16px; }
+  .case-row{ padding:11px 0; border-top:1px solid var(--line-light); display:grid; grid-template-columns:64px 1fr; gap:14px; }
+  .case-row:first-of-type{ border-top:none; }
+  .case-row .k{ font-family:'IBM Plex Mono', monospace; font-size:10.5px; letter-spacing:0.06em; text-transform:uppercase; color:var(--amber); padding-top:1px; }
+  .case-row .v{ font-size:13.5px; color:var(--ink-soft); line-height:1.45; }
+  .preview-btn{
+    margin-top:18px; display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    font-family:'IBM Plex Mono', monospace; font-size:12.5px; font-weight:500;
+    color:var(--navy); background:var(--paper-2); border:1px solid var(--line-light);
+    padding:10px 16px; border-radius:2px; cursor:pointer; transition:all .2s ease; width:100%;
+  }
+  .preview-btn:hover{ background:var(--navy); color:var(--paper); border-color:var(--navy); }
+  .preview-btn svg{ width:13px; height:13px; }
+
+  /* ---------- Preview modal ---------- */
+  .preview-modal{
+    position:fixed; inset:0; z-index:100; display:none;
+    background:rgba(10,25,48,0.72); backdrop-filter:blur(4px);
+    align-items:center; justify-content:center; padding:28px;
+  }
+  .preview-modal.open{ display:flex; }
+  .preview-panel{
+    background:#fff; width:100%; max-width:1000px; height:min(82vh, 720px);
+    border-radius:6px; overflow:hidden; display:flex; flex-direction:column;
+    box-shadow:0 40px 80px -20px rgba(0,0,0,0.5);
+  }
+  .preview-bar{
+    background:var(--navy); color:var(--paper); padding:12px 18px;
+    display:flex; align-items:center; justify-content:space-between; flex-shrink:0;
+  }
+  .preview-bar .title{ font-family:'IBM Plex Mono', monospace; font-size:12.5px; display:flex; align-items:center; gap:10px; }
+  .preview-bar .title .dot{ width:7px; height:7px; border-radius:50%; background:var(--amber); }
+  .preview-close{
+    background:transparent; border:1px solid rgba(246,244,239,0.3); color:var(--paper);
+    width:28px; height:28px; border-radius:3px; cursor:pointer; font-size:15px; line-height:1;
+    display:flex; align-items:center; justify-content:center; transition:all .2s ease;
+  }
+  .preview-close:hover{ background:rgba(246,244,239,0.14); }
+  .preview-panel iframe{ flex:1; width:100%; border:none; background:#fff; }
+
+  /* ---------- Pricing ---------- */
+  .pricing-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; align-items:stretch; }
+  .price-card{
+    background:#fff; border:1px solid var(--line-light); border-radius:var(--radius);
+    padding:36px 30px; display:flex; flex-direction:column;
+  }
+  .price-card.feat{ border-color:var(--navy); box-shadow:0 20px 40px -24px rgba(10,25,48,0.3); position:relative; }
+  .price-card.feat::before{
+    content:'MOST CHOSEN'; position:absolute; top:-1px; right:24px; transform:translateY(-50%);
+    background:var(--amber); color:var(--navy); font-family:'IBM Plex Mono', monospace;
+    font-size:10px; letter-spacing:0.08em; padding:4px 10px; border-radius:2px;
+  }
+  .price-card .tier{ font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--teal); margin-bottom:16px; }
+  .price-card .price{ font-family:'Fraunces', serif; font-size:38px; color:var(--navy); font-weight:600; margin-bottom:4px; }
+  .price-card .price span{ font-size:14px; font-family:'Inter'; color:var(--ink-soft); font-weight:400; }
+  .price-card .desc{ font-size:13.5px; color:var(--ink-soft); margin-bottom:26px; }
+  .price-card ul{ list-style:none; margin-bottom:30px; flex:1; }
+  .price-card li{ font-size:14px; padding:9px 0; border-top:1px solid var(--line-light); display:flex; gap:10px; }
+  .price-card li:first-child{ border-top:none; }
+  .price-card li::before{ content:'—'; color:var(--amber); flex-shrink:0; }
+
+  /* ---------- Testimonials ---------- */
+  .test-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+  .test-card{ background:#fff; border:1px solid var(--line-light); border-radius:var(--radius); padding:30px 26px; }
+  .test-card .quote{ font-family:'Fraunces', serif; font-size:16.5px; line-height:1.5; color:var(--navy); margin-bottom:22px; font-style:italic; }
+  .test-person{ display:flex; align-items:center; gap:12px; }
+  .avatar{ width:38px; height:38px; border-radius:50%; background:var(--navy); color:var(--paper); display:flex; align-items:center; justify-content:center; font-family:'IBM Plex Mono'; font-size:13px; }
+  .test-person .name{ font-size:14px; font-weight:600; color:var(--navy); }
+  .test-person .role{ font-size:12.5px; color:var(--ink-soft); }
+  .placeholder-note{ margin-top:28px; font-size:12.5px; color:var(--ink-soft); font-family:'IBM Plex Mono', monospace; }
+
+  /* ---------- Contact ---------- */
+  .contact{ background:var(--navy); color:var(--paper); text-align:center; padding:110px 0; position:relative; overflow:hidden;}
+  .contact::before{
+    content:'';
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(var(--line-dark) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-dark) 1px, transparent 1px);
+    background-size:44px 44px;
+    mask-image:radial-gradient(circle at center, black, transparent 70%);
+  }
+  .contact-inner{ position:relative; max-width:620px; margin:0 auto; }
+  .contact .eyebrow{ justify-content:center; color:var(--amber); margin-bottom:20px; }
+  .contact .eyebrow::before{ background:var(--amber); }
+  .contact h2{ color:var(--paper); font-size:clamp(30px,4vw,44px); margin-bottom:20px; }
+  .contact p{ color:rgba(246,244,239,0.68); margin-bottom:38px; font-size:16px; }
+  .email-box{
+    display:inline-flex; align-items:center; gap:14px;
+    background:rgba(246,244,239,0.06); border:1px solid rgba(246,244,239,0.18);
+    padding:16px 24px; border-radius:var(--radius);
+  }
+  .email-box a{ font-family:'IBM Plex Mono', monospace; font-size:16px; color:var(--paper); letter-spacing:0.01em; }
+  .copy-btn{
+    background:var(--amber); color:var(--navy); border:none; padding:8px 14px; border-radius:2px;
+    font-family:'IBM Plex Mono', monospace; font-size:12px; cursor:pointer; transition:background .2s ease;
+  }
+  .copy-btn:hover{ background:#eeb46e; }
+
+  /* ---------- Footer ---------- */
+  footer{ padding:36px 0; border-top:1px solid var(--line-light); }
+  .footer-inner{ display:flex; justify-content:space-between; align-items:center; }
+  .footer-inner .logo{ font-size:16px; }
+  footer p{ font-size:12.5px; color:var(--ink-soft); }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 900px){
+    .hero-inner{ grid-template-columns:1fr; }
+    .blueprint{ height:280px; }
+    .services-grid{ grid-template-columns:repeat(2,1fr); }
+    .portfolio-grid, .pricing-grid, .test-grid{ grid-template-columns:1fr; }
+    .stat-strip{ grid-template-columns:repeat(2,1fr); row-gap:20px; }
+    .stat:nth-child(3){ border-left:none; }
+    nav ul{ display:none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <div class="logo"><span class="logo-mark">N</span><span class="wordmark">NSK</span></div>
+    <nav><ul>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#portfolio">Portfolio</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#testimonials">Testimonials</a></li>
+    </ul></nav>
+    <a href="#contact" class="btn btn-ghost">Get in touch</a>
+  </div>
+</header>
+
+<section class="hero">
+  <span class="hero-watermark" aria-hidden="true">NSK</span>
+  <div class="wrap">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow">NSK — Web Design Studio</p>
+        <h1>Websites, built<br><em>to spec.</em></h1>
+        <p>NSK designs and builds professional websites for businesses that want to be found, trusted, and chosen. From first sketch to launch day, every page is planned before it's built.</p>
+        <div class="hero-cta">
+          <a href="#contact" class="btn">Start a project →</a>
+          <a href="#portfolio" class="btn btn-ghost">See the work</a>
+        </div>
+      </div>
+      <div class="blueprint" aria-hidden="true">
+        <svg viewBox="0 0 320 300">
+          <!-- browser frame -->
+          <rect class="bp-line" x="20" y="20" width="280" height="220" rx="4"/>
+          <line class="bp-line" x1="20" y1="52" x2="300" y2="52"/>
+          <circle class="bp-fill" cx="36" cy="36" r="3"/>
+          <circle class="bp-fill alt" cx="48" cy="36" r="3"/>
+          <circle class="bp-fill" cx="60" cy="36" r="3"/>
+          <!-- hero block -->
+          <rect class="bp-line" x="38" y="70" width="130" height="14"/>
+          <rect class="bp-fill" x="38" y="70" width="90" height="14" opacity="0"/>
+          <rect class="bp-line" x="38" y="92" width="180" height="8"/>
+          <!-- button -->
+          <rect class="bp-fill" x="38" y="112" width="64" height="20" rx="2"/>
+          <!-- grid cards -->
+          <rect class="bp-line" x="38" y="160" width="76" height="60" rx="2"/>
+          <rect class="bp-line" x="122" y="160" width="76" height="60" rx="2"/>
+          <rect class="bp-line" x="206" y="160" width="76" height="60" rx="2"/>
+          <rect class="bp-fill alt" x="38" y="160" width="76" height="60" rx="2" opacity="0.14"/>
+          <text class="bp-label" x="204" y="248">640 × 300 — v1.0</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="stat-strip">
+      <div class="stat"><div class="num">40+</div><div class="lbl">Sites shipped</div></div>
+      <div class="stat"><div class="num">2–4</div><div class="lbl">Weeks, typical build</div></div>
+      <div class="stat"><div class="num">100%</div><div class="lbl">Mobile-ready</div></div>
+      <div class="stat"><div class="num">1:1</div><div class="lbl">Direct with your builder</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="services">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Services</p>
+      <h2>One studio, four ways to launch</h2>
+      <p>Every engagement starts the same way — understanding what your business needs a website to do — then takes the shape that fits.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="idx mono">01</div>
+        <h3>Business Website</h3>
+        <p>A clear, credible site for a company, studio, or practice — built to explain what you do and make contact easy.</p>
+      </div>
+      <div class="service-card">
+        <div class="idx mono">02</div>
+        <h3>Online Store</h3>
+        <p>A storefront that handles products, checkout, and orders, set up so you can manage it yourself after launch.</p>
+      </div>
+      <div class="service-card">
+        <div class="idx mono">03</div>
+        <h3>Landing Page</h3>
+        <p>A focused single page built around one goal — a signup, a launch, a campaign — with copy and layout tuned to convert.</p>
+      </div>
+      <div class="service-card">
+        <div class="idx mono">04</div>
+        <h3>Redesign</h3>
+        <p>A rebuild of an existing site that's fallen behind — same purpose, modern structure, faster and easier to update.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt-bg" id="portfolio">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Portfolio</p>
+      <h2>Recent builds</h2>
+      <p>Six sample projects across different industries — click any thumbnail or "Open project" to view it as a working page. Replace these with your own case studies as you take on clients.</p>
+    </div>
+    <div class="portfolio-grid">
+
+      <div class="proj-card">
+        <div class="browser-chrome" style="background:#F0EAE0;" data-project="harlow">
+          <div class="chrome-bar"><span class="chrome-dot"></span><span class="chrome-dot"></span><span class="chrome-dot"></span></div>
+          <div class="chrome-body">
+            <div class="blk" style="top:16px; left:16px; width:60%; height:10px; background:var(--navy); opacity:0.85;"></div>
+            <div class="blk" style="top:34px; left:16px; width:80%; height:6px;"></div>
+            <div class="blk" style="top:50px; left:16px; width:40px; height:16px; background:var(--amber); opacity:0.9;"></div>
+            <div class="blk" style="bottom:14px; left:16px; width:28%; height:34px;"></div>
+            <div class="blk" style="bottom:14px; left:calc(28% + 24px); width:28%; height:34px;"></div>
+            <div class="blk" style="bottom:14px; right:16px; width:28%; height:34px;"></div>
+          </div>
+          <div class="hover-hint">▶ Open project</div>
+        </div>
+        <div class="proj-meta">
+          <div class="cat mono">Business · Consulting</div>
+          <h3>Harlow &amp; Finch Advisory</h3>
+          <div class="case-row"><div class="k">Problem</div><div class="v">Their old site was five years out of date and didn't explain their services clearly — most leads came from referrals only.</div></div>
+          <div class="case-row"><div class="k">Solution</div><div class="v">Rebuilt around three core services with credentials up front and a one-click booking flow for consultations.</div></div>
+          <div class="case-row"><div class="k">Result</div><div class="v">Site-sourced enquiries went from near zero to a steady stream within the first month.</div></div>
+          <button class="preview-btn" data-project="harlow">Open project ↗</button>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="browser-chrome" style="background:#EAE3F0;" data-project="wren">
+          <div class="chrome-bar"><span class="chrome-dot"></span><span class="chrome-dot"></span><span class="chrome-dot"></span></div>
+          <div class="chrome-body">
+            <div class="blk" style="top:14px; left:16px; width:30%; height:100px;"></div>
+            <div class="blk" style="top:14px; left:calc(30% + 24px); width:30%; height:100px;"></div>
+            <div class="blk" style="top:14px; right:16px; width:30%; height:100px;"></div>
+            <div class="blk" style="bottom:12px; left:16px; width:120px; height:14px; background:var(--teal); opacity:0.85;"></div>
+          </div>
+          <div class="hover-hint">▶ Open project</div>
+        </div>
+        <div class="proj-meta">
+          <div class="cat mono">E-commerce</div>
+          <h3>Wren Studio Ceramics</h3>
+          <div class="case-row"><div class="k">Problem</div><div class="v">Selling only through Instagram DMs — no catalog, no checkout, orders tracked by hand.</div></div>
+          <div class="case-row"><div class="k">Solution</div><div class="v">Built a full storefront with a product catalog, cart, and checkout the founder can update herself with no code.</div></div>
+          <div class="case-row"><div class="k">Result</div><div class="v">Went from idea to a live store in under three weeks, ready before her next studio sale.</div></div>
+          <button class="preview-btn" data-project="wren">Open project ↗</button>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="browser-chrome" style="background:#12161C;" data-project="fielder">
+          <div class="chrome-bar"><span class="chrome-dot"></span><span class="chrome-dot"></span><span class="chrome-dot"></span></div>
+          <div class="chrome-body">
+            <div class="blk" style="top:20px; left:50%; transform:translateX(-50%); width:70%; height:12px; background:#2A2F3A;"></div>
+            <div class="blk" style="top:40px; left:50%; transform:translateX(-50%); width:50%; height:6px; background:#2A2F3A;"></div>
+            <div class="blk" style="top:58px; left:50%; transform:translateX(-50%); width:90px; height:22px; background:var(--amber); opacity:0.9;"></div>
+          </div>
+          <div class="hover-hint">▶ Open project</div>
+        </div>
+        <div class="proj-meta">
+          <div class="cat mono">Landing Page</div>
+          <h3>Fielder App Waitlist</h3>
+          <div class="case-row"><div class="k">Problem</div><div class="v">Needed to build an email waitlist ahead of launch with no site and a two-week deadline.</div></div>
+          <div class="case-row"><div class="k">Solution</div><div class="v">A single focused page built around one action — join the waitlist — with clear copy and a fast load time.</div></div>
+          <div class="case-row"><div class="k">Result</div><div class="v">Over 400 sign-ups collected before the app's public release.</div></div>
+          <button class="preview-btn" data-project="fielder">Open project ↗</button>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="browser-chrome" style="background:#F3E9EC;" data-project="coastal">
+          <div class="chrome-bar"><span class="chrome-dot"></span><span class="chrome-dot"></span><span class="chrome-dot"></span></div>
+          <div class="chrome-body">
+            <div class="blk" style="top:18px; left:16px; width:55%; height:10px; background:#7C4A5C; opacity:0.85;"></div>
+            <div class="blk" style="top:36px; left:16px; width:75%; height:6px;"></div>
+            <div class="blk" style="bottom:14px; left:16px; width:22%; height:38px; border-radius:50%;"></div>
+            <div class="blk" style="bottom:14px; left:calc(22% + 20px); width:22%; height:38px; border-radius:50%;"></div>
+            <div class="blk" style="bottom:14px; left:calc(44% + 40px); width:22%; height:38px; border-radius:50%;"></div>
+          </div>
+          <div class="hover-hint">▶ Open project</div>
+        </div>
+        <div class="proj-meta">
+          <div class="cat mono">Business · Local Shop</div>
+          <h3>Coastal Bloom Florist</h3>
+          <div class="case-row"><div class="k">Problem</div><div class="v">Walk-in-only flower shop with no way for customers to order ahead for events or delivery.</div></div>
+          <div class="case-row"><div class="k">Solution</div><div class="v">A simple ordering page with seasonal arrangements, delivery areas, and a form that emails orders directly.</div></div>
+          <div class="case-row"><div class="k">Result</div><div class="v">Pre-orders for Mother's Day weekend outsold the same weekend the year before.</div></div>
+          <button class="preview-btn" data-project="coastal">Open project ↗</button>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="browser-chrome" style="background:#E7F0F2;" data-project="bexley">
+          <div class="chrome-bar"><span class="chrome-dot"></span><span class="chrome-dot"></span><span class="chrome-dot"></span></div>
+          <div class="chrome-body">
+            <div class="blk" style="top:16px; left:16px; width:50%; height:10px; background:#1D5C6B; opacity:0.85;"></div>
+            <div class="blk" style="top:34px; left:16px; width:70%; height:6px;"></div>
+            <div class="blk" style="top:50px; left:16px; width:56px; height:18px; background:var(--amber); opacity:0.9;"></div>
+            <div class="blk" style="bottom:14px; right:16px; width:38%; height:56px;"></div>
+          </div>
+          <div class="hover-hint">▶ Open project</div>
+        </div>
+        <div class="proj-meta">
+          <div class="cat mono">Healthcare · Redesign</div>
+          <h3>Bexley Dental Care</h3>
+          <div class="case-row"><div class="k">Problem</div><div class="v">An outdated site that didn't work on mobile, where most patients were searching from.</div></div>
+          <div class="case-row"><div class="k">Solution</div><div class="v">Rebuilt mobile-first around online booking, with clear service pages and staff bios.</div></div>
+          <div class="case-row"><div class="k">Result</div><div class="v">Online booking now accounts for the majority of new-patient appointments.</div></div>
+          <button class="preview-btn" data-project="bexley">Open project ↗</button>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="browser-chrome" style="background:#EDEAE0;" data-project="oliveash">
+          <div class="chrome-bar"><span class="chrome-dot"></span><span class="chrome-dot"></span><span class="chrome-dot"></span></div>
+          <div class="chrome-body">
+            <div class="blk" style="top:0; left:0; width:100%; height:70px; background:#2B3A2E; opacity:0.9;"></div>
+            <div class="blk" style="top:22px; left:16px; width:40%; height:10px; background:var(--amber); opacity:0.9;"></div>
+            <div class="blk" style="bottom:14px; left:16px; width:30%; height:34px;"></div>
+            <div class="blk" style="bottom:14px; left:calc(30% + 24px); width:30%; height:34px;"></div>
+            <div class="blk" style="bottom:14px; right:16px; width:30%; height:34px;"></div>
+          </div>
+          <div class="hover-hint">▶ Open project</div>
+        </div>
+        <div class="proj-meta">
+          <div class="cat mono">Restaurant</div>
+          <h3>Olive &amp; Ash Kitchen</h3>
+          <div class="case-row"><div class="k">Problem</div><div class="v">No site at all — menu and hours only existed on a third-party listing site the owner couldn't edit.</div></div>
+          <div class="case-row"><div class="k">Solution</div><div class="v">A one-page site with the full menu, hours, location, and a reservation link, fully owned by the restaurant.</div></div>
+          <div class="case-row"><div class="k">Result</div><div class="v">Reservation link clicks became the top traffic source within the first two weeks.</div></div>
+          <button class="preview-btn" data-project="oliveash">Open project ↗</button>
+        </div>
+      </div>
+
+    </div>
+    <p class="placeholder-note">↑ Sample case studies — replace with your own: swap the screenshot, rewrite Problem/Solution/Result, and update the preview with your real project once it's live.</p>
+  </div>
+</section>
+
+<!-- Preview modal -->
+<div class="preview-modal" id="preview-modal">
+  <div class="preview-panel">
+    <div class="preview-bar">
+      <div class="title"><span class="dot"></span><span id="preview-title">Project preview</span></div>
+      <button class="preview-close" id="preview-close" aria-label="Close preview">✕</button>
+    </div>
+    <iframe id="preview-frame" title="Project preview"></iframe>
+  </div>
+</div>
+
+<!-- Hidden project templates (rendered live inside the preview modal) -->
+<template id="tpl-harlow"><!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>
+*{margin:0;padding:0;box-sizing:border-box;}body{font-family:Georgia,'Times New Roman',serif;color:#1B2430;background:#F7F5F0;}
+header{background:#0F2438;color:#F7F5F0;padding:24px 48px;display:flex;justify-content:space-between;align-items:center;}
+.brand{font-size:20px;letter-spacing:0.04em;}nav a{color:#F7F5F0;margin-left:28px;font-size:14px;text-decoration:none;font-family:Arial,sans-serif;}
+.hero{padding:90px 48px;max-width:720px;}.hero h1{font-size:44px;line-height:1.2;margin-bottom:18px;}
+.hero p{font-family:Arial,sans-serif;font-size:16px;color:#4A5566;margin-bottom:28px;max-width:520px;}
+.btn{display:inline-block;background:#C9973E;color:#0F2438;padding:13px 26px;font-family:Arial,sans-serif;font-weight:bold;font-size:14px;text-decoration:none;}
+.services{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#DDD8CC;border-top:1px solid #DDD8CC;border-bottom:1px solid #DDD8CC;}
+.services div{background:#F7F5F0;padding:32px;font-family:Arial,sans-serif;}.services h3{font-family:Georgia,serif;font-size:18px;margin-bottom:8px;color:#0F2438;}
+.services p{font-size:13.5px;color:#5A6478;}footer{padding:28px 48px;font-family:Arial,sans-serif;font-size:12px;color:#8A93A3;}
+</style></head><body>
+<header><div class="brand">Harlow &amp; Finch</div><nav><a href="#">Services</a><a href="#">About</a><a href="#">Contact</a></nav></header>
+<div class="hero"><h1>Financial clarity, plainly explained.</h1><p>Harlow &amp; Finch Advisory helps small businesses make sense of their numbers — planning, tax strategy, and growth advice without the jargon.</p><a class="btn" href="#">Book a consultation</a></div>
+<div class="services">
+<div><h3>Tax Planning</h3><p>Year-round strategy, not just April filing.</p></div>
+<div><h3>Growth Advisory</h3><p>Cash flow and forecasting for scaling businesses.</p></div>
+<div><h3>Bookkeeping</h3><p>Monthly reporting you actually understand.</p></div>
+</div>
+<footer>© Harlow &amp; Finch Advisory — Sample project built by NSK</footer>
+</body></html></template>
+
+<template id="tpl-wren"><!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>
+*{margin:0;padding:0;box-sizing:border-box;}body{font-family:'Trebuchet MS',Arial,sans-serif;background:#FBF6EF;color:#3A2E22;}
+header{padding:22px 48px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #E8DDC9;}
+.brand{font-size:20px;font-weight:bold;letter-spacing:0.03em;}nav a{margin-left:24px;font-size:13px;color:#5B4A38;text-decoration:none;}
+.hero{text-align:center;padding:70px 24px 50px;}.hero h1{font-size:38px;margin-bottom:14px;color:#8A4A32;}
+.hero p{color:#6B5A47;max-width:460px;margin:0 auto 26px;font-size:15px;}
+.btn{background:#8A4A32;color:#FBF6EF;padding:12px 24px;border:none;font-size:14px;border-radius:2px;}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;padding:0 48px 60px;}
+.card{background:#fff;border:1px solid #EEE3D0;}
+.thumb{height:140px;display:flex;align-items:center;justify-content:center;font-size:13px;color:#B08A6B;}
+.card p{padding:14px 16px;font-size:14px;font-weight:bold;}
+.card span{padding:0 16px 16px;display:block;font-size:13px;color:#8A4A32;}
+footer{padding:24px 48px;font-size:12px;color:#9C8A75;text-align:center;}
+</style></head><body>
+<header><div class="brand">Wren Studio Ceramics</div><nav><a href="#">Shop</a><a href="#">Our Story</a><a href="#">Cart (0)</a></nav></header>
+<div class="hero"><h1>Handmade, one piece at a time.</h1><p>Small-batch ceramics thrown and glazed in a home studio. Every piece is a little different — that's the point.</p><button class="btn">Shop the collection</button></div>
+<div class="grid">
+<div class="card"><div class="thumb" style="background:#E7CBB0;">Speckled Mug</div><p>Speckled Stoneware Mug</p><span>$32</span></div>
+<div class="card"><div class="thumb" style="background:#D7B79A;">Bowl Set</div><p>Nested Bowl Set (3)</p><span>$68</span></div>
+<div class="card"><div class="thumb" style="background:#C9A583;">Vase</div><p>Tall Ribbed Vase</p><span>$54</span></div>
+</div>
+<footer>© Wren Studio Ceramics — Sample project built by NSK</footer>
+</body></html></template>
+
+<template id="tpl-fielder"><!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>
+*{margin:0;padding:0;box-sizing:border-box;}body{font-family:Arial,Helvetica,sans-serif;background:#0E1116;color:#F2F3F5;}
+header{padding:22px 48px;display:flex;justify-content:space-between;align-items:center;}
+.brand{font-weight:bold;font-size:18px;letter-spacing:0.05em;}
+.hero{text-align:center;padding:90px 24px;}
+.hero h1{font-size:42px;margin-bottom:14px;}.hero h1 span{color:#C7F464;}
+.hero p{color:#9AA1AC;max-width:440px;margin:0 auto 30px;font-size:15px;}
+.form{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;}
+input{padding:13px 16px;border-radius:4px;border:1px solid #2A2F3A;background:#171B22;color:#F2F3F5;font-size:14px;width:240px;}
+button{padding:13px 22px;border-radius:4px;border:none;background:#C7F464;color:#0E1116;font-weight:bold;font-size:14px;}
+.count{margin-top:22px;font-size:13px;color:#6B7280;}
+footer{padding:24px 48px;font-size:12px;color:#5A6270;text-align:center;}
+</style></head><body>
+<header><div class="brand">FIELDER</div><div style="font-size:13px;color:#9AA1AC;">Launching soon</div></header>
+<div class="hero"><h1>Train smarter.<br><span>Join the waitlist.</span></h1><p>Fielder builds your workout around your actual recovery, not a fixed calendar. Early access opens soon.</p>
+<div class="form"><input type="email" placeholder="you@email.com" /><button>Join waitlist</button></div>
+<div class="count">427 people already on the list</div></div>
+<footer>© Fielder — Sample project built by NSK</footer>
+</body></html></template>
+
+<template id="tpl-coastal"><!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>
+*{margin:0;padding:0;box-sizing:border-box;}body{font-family:'Segoe UI',Arial,sans-serif;background:#FBF1F4;color:#4A2E37;}
+header{padding:20px 48px;display:flex;justify-content:space-between;align-items:center;}
+.brand{font-family:Georgia,serif;font-size:20px;color:#7C4A5C;}nav a{margin-left:22px;font-size:13px;color:#8A6470;text-decoration:none;}
+.hero{text-align:center;padding:70px 24px 50px;}.hero h1{font-family:Georgia,serif;font-size:36px;color:#7C4A5C;margin-bottom:14px;}
+.hero p{color:#8A6470;max-width:460px;margin:0 auto 26px;font-size:15px;}
+.btn{background:#7C4A5C;color:#FBF1F4;padding:12px 26px;border:none;border-radius:20px;font-size:14px;}
+.gallery{display:flex;justify-content:center;gap:16px;padding:0 24px 60px;flex-wrap:wrap;}
+.bloom{width:120px;height:120px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;text-align:center;padding:10px;}
+footer{padding:24px 48px;font-size:12px;color:#B08A96;text-align:center;}
+</style></head><body>
+<header><div class="brand">Coastal Bloom</div><nav><a href="#">Arrangements</a><a href="#">Delivery</a><a href="#">Order</a></nav></header>
+<div class="hero"><h1>Fresh flowers, ordered ahead.</h1><p>Seasonal arrangements for events, deliveries, and everyday moments — order online, pick up or have it delivered.</p><button class="btn">Order for this week</button></div>
+<div class="gallery">
+<div class="bloom" style="background:#C97B93;">Garden Mix</div>
+<div class="bloom" style="background:#B98AA8;">Pastel Bouquet</div>
+<div class="bloom" style="background:#D4A5B0;">Wildflower Jar</div>
+</div>
+<footer>© Coastal Bloom Florist — Sample project built by NSK</footer>
+</body></html></template>
+
+<template id="tpl-bexley"><!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>
+*{margin:0;padding:0;box-sizing:border-box;}body{font-family:Arial,Helvetica,sans-serif;background:#FFFFFF;color:#1E2A2E;}
+header{padding:20px 48px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #E4EEF0;}
+.brand{font-weight:bold;font-size:19px;color:#1D5C6B;}nav a{margin-left:24px;font-size:13px;color:#3E5C63;text-decoration:none;}
+.hero{display:flex;align-items:center;gap:40px;padding:70px 48px;background:#F1F8F9;}
+.hero h1{font-size:32px;color:#1D5C6B;margin-bottom:14px;line-height:1.3;}
+.hero p{color:#4A6169;font-size:15px;margin-bottom:24px;max-width:380px;}
+.btn{background:#1D5C6B;color:#fff;padding:13px 26px;border:none;border-radius:4px;font-size:14px;}
+.imgblock{flex-shrink:0;width:260px;height:180px;background:#C9DEE2;border-radius:6px;}
+.services{display:flex;justify-content:center;gap:40px;padding:50px 24px;text-align:center;}
+.services div h3{color:#1D5C6B;font-size:16px;margin-bottom:6px;}.services div p{font-size:13px;color:#5C7278;}
+footer{padding:24px 48px;font-size:12px;color:#8CA0A5;text-align:center;}
+</style></head><body>
+<header><div class="brand">Bexley Dental Care</div><nav><a href="#">Services</a><a href="#">Team</a><a href="#">Book Now</a></nav></header>
+<div class="hero"><div><h1>Dental care that fits your schedule.</h1><p>Same-week appointments, gentle care, and a team that explains everything before they do it.</p><button class="btn">Book an appointment</button></div><div class="imgblock"></div></div>
+<div class="services">
+<div><h3>Checkups</h3><p>Routine care &amp; cleanings</p></div>
+<div><h3>Cosmetic</h3><p>Whitening &amp; veneers</p></div>
+<div><h3>Emergency</h3><p>Same-day availability</p></div>
+</div>
+<footer>© Bexley Dental Care — Sample project built by NSK</footer>
+</body></html></template>
+
+<template id="tpl-oliveash"><!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>
+*{margin:0;padding:0;box-sizing:border-box;}body{font-family:Georgia,serif;background:#F5F1E6;color:#2B3A2E;}
+header{background:#2B3A2E;color:#F5F1E6;padding:22px 48px;display:flex;justify-content:space-between;align-items:center;}
+.brand{font-size:20px;letter-spacing:0.03em;}nav a{color:#E3C77A;margin-left:24px;font-size:13px;text-decoration:none;font-family:Arial,sans-serif;}
+.hero{padding:70px 48px;text-align:center;}.hero h1{font-size:36px;margin-bottom:12px;}
+.hero p{font-family:Arial,sans-serif;color:#5A6650;max-width:420px;margin:0 auto 24px;font-size:15px;}
+.btn{background:#E3C77A;color:#2B3A2E;border:none;padding:12px 24px;font-family:Arial,sans-serif;font-weight:bold;font-size:14px;}
+.menu{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#E0DAC5;border-top:1px solid #E0DAC5;}
+.menu div{background:#F5F1E6;padding:28px;}.menu h4{font-size:15px;margin-bottom:6px;}
+.menu p{font-family:Arial,sans-serif;font-size:12.5px;color:#6B7460;}
+footer{padding:24px 48px;font-family:Arial,sans-serif;font-size:12px;color:#8A9280;text-align:center;}
+</style></head><body>
+<header><div class="brand">Olive &amp; Ash Kitchen</div><nav><a href="#">Menu</a><a href="#">Hours</a><a href="#">Reserve</a></nav></header>
+<div class="hero"><h1>Seasonal plates, shared tables.</h1><p>A neighborhood kitchen serving simple food done well. Open Tuesday to Sunday, dinner only.</p><button class="btn">Reserve a table</button></div>
+<div class="menu">
+<div><h4>Roast Vegetables</h4><p>Market vegetables, herb oil</p></div>
+<div><h4>Pan-Seared Fish</h4><p>Catch of the day, citrus butter</p></div>
+<div><h4>Olive Oil Cake</h4><p>House-made, whipped cream</p></div>
+</div>
+<footer>© Olive &amp; Ash Kitchen — Sample project built by NSK</footer>
+</body></html></template>
+
+<section class="section" id="pricing">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Pricing</p>
+      <h2>Straightforward packages</h2>
+      <p>Fixed scope, fixed price, no surprises. Custom work is quoted after a short discovery call.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="tier mono">Starter</div>
+        <div class="price">$450<span>/ one-time</span></div>
+        <div class="desc">A focused single page for a small business or personal brand.</div>
+        <ul>
+          <li>1 page, mobile responsive</li>
+          <li>Contact form or email link</li>
+          <li>Basic SEO setup</li>
+          <li>5-day turnaround</li>
+        </ul>
+        <a href="#contact" class="btn btn-ghost">Choose Starter</a>
+      </div>
+      <div class="price-card feat">
+        <div class="tier mono">Business</div>
+        <div class="price">$950<span>/ one-time</span></div>
+        <div class="desc">A complete multi-page site for a growing business.</div>
+        <ul>
+          <li>Up to 6 pages</li>
+          <li>Custom design, no templates</li>
+          <li>Contact forms &amp; map</li>
+          <li>SEO &amp; analytics setup</li>
+          <li>2-week turnaround</li>
+        </ul>
+        <a href="#contact" class="btn">Choose Business</a>
+      </div>
+      <div class="price-card">
+        <div class="tier mono">Custom</div>
+        <div class="price">Quoted<span>after a call</span></div>
+        <div class="desc">Online stores, booking systems, or larger builds.</div>
+        <ul>
+          <li>Unlimited pages</li>
+          <li>E-commerce or bookings</li>
+          <li>Ongoing support option</li>
+          <li>Scoped after a discovery call</li>
+        </ul>
+        <a href="#contact" class="btn btn-ghost">Request a quote</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt-bg" id="testimonials">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Testimonials</p>
+      <h2>What clients say</h2>
+    </div>
+    <div class="test-grid">
+      <div class="test-card">
+        <p class="quote">"NSK understood exactly what our clinic needed — the site paid for itself in the first month of bookings."</p>
+        <div class="test-person">
+          <div class="avatar mono">RA</div>
+          <div><div class="name">Riya Agarwal</div><div class="role">Founder, Bloom Wellness</div></div>
+        </div>
+      </div>
+      <div class="test-card">
+        <p class="quote">"Fast, clear communication, and the final site looked far more expensive than what we paid."</p>
+        <div class="test-person">
+          <div class="avatar mono">DM</div>
+          <div><div class="name">David Mehta</div><div class="role">Owner, Mehta &amp; Sons</div></div>
+        </div>
+      </div>
+      <div class="test-card">
+        <p class="quote">"Our online store went from idea to live in under three weeks. Couldn't be happier."</p>
+        <div class="test-person">
+          <div class="avatar mono">SK</div>
+          <div><div class="name">Sana Kapoor</div><div class="role">Founder, Wren Studio</div></div>
+        </div>
+      </div>
+    </div>
+    <p class="placeholder-note">↑ Placeholder quotes — replace with real client feedback once you have it.</p>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap contact-inner">
+    <p class="eyebrow">Get in touch</p>
+    <h2>Tell me what you're building.</h2>
+    <p>Send an email with a bit about your business and what you need — I'll reply with next steps and a rough quote.</p>
+    <div class="email-box">
+      <a href="mailto:nehakanak2024@gmail.com" id="email-link">nehakanak2024@gmail.com</a>
+      <button class="copy-btn" id="copy-btn">Copy</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-inner">
+    <div class="logo"><span class="logo-mark">N</span><span class="wordmark">NSK</span></div>
+    <p>© 2026 NSK. All websites built to spec.</p>
+  </div>
+</footer>
+
+<script>
+  const copyBtn = document.getElementById('copy-btn');
+  copyBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText('nehakanak2024@gmail.com').then(() => {
+      copyBtn.textContent = 'Copied';
+      setTimeout(() => { copyBtn.textContent = 'Copy'; }, 1600);
+    });
+  });
+
+  const projectTitles = {
+    harlow: 'Harlow & Finch Advisory',
+    wren: 'Wren Studio Ceramics',
+    fielder: 'Fielder App Waitlist',
+    coastal: 'Coastal Bloom Florist',
+    bexley: 'Bexley Dental Care',
+    oliveash: 'Olive & Ash Kitchen'
+  };
+
+  const modal = document.getElementById('preview-modal');
+  const frame = document.getElementById('preview-frame');
+  const titleEl = document.getElementById('preview-title');
+
+  function openProject(key){
+    const tpl = document.getElementById('tpl-' + key);
+    if(!tpl) return;
+    titleEl.textContent = projectTitles[key] || 'Project preview';
+    frame.srcdoc = tpl.innerHTML;
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(){
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+    frame.srcdoc = '';
+  }
+
+  document.querySelectorAll('[data-project]').forEach(el => {
+    el.addEventListener('click', () => openProject(el.getAttribute('data-project')));
+  });
+  document.getElementById('preview-close').addEventListener('click', closeModal);
+  modal.addEventListener('click', (e) => { if(e.target === modal) closeModal(); });
+  document.addEventListener('keydown', (e) => { if(e.key === 'Escape' && modal.classList.contains('open')) closeModal(); });
+</script>
+
+</body>
+</html>
